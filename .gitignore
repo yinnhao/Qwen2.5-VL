@@ -9,3 +9,5 @@ wheels/
 # venv
 .venv
 *.cache
+test_video
+*.tar

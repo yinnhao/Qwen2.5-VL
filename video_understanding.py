@@ -3,7 +3,7 @@ from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 import os
 import time
-os.environ['https_proxy'] = 'http://gzbh-aip-paddlecloud140.gzbh:8128'
+# os.environ['https_proxy'] = 'http://gzbh-aip-paddlecloud140.gzbh:8128'
 
 model_path = "Qwen/Qwen2.5-VL-7B-Instruct"
 
@@ -108,9 +108,73 @@ def inference(video_path, prompt, max_new_tokens=2048, total_pixels=20480 * 28 *
     return output_text[0]
 
 
-video_url = "https://duguang-labelling.oss-cn-shanghai.aliyuncs.com/qiansun/video_ocr/videos/50221078283.mp4"
-prompt = "请用表格总结一下视频中的商品特点"
+video_url = "test_video/小林说-碳排放-cut/小林说-碳排放-Scene-003.mp4"
+# prompt = "请用表格总结一下视频中的商品特点"
+# prompt = "请描述一下视频的内容摘要"
+# prompt = "我想分析视频的剪辑制作手法，请描述画面使用的素材类型和空间布局,比如：“该视频背景为虚化模糊效果，画面中有三个画中画，中间两个窗口分别展示视频素材和图表，右下角放置主播讲解的窗口”"
+prompt = """
+作为专业视频制作分析师，请按以下步骤解析当前视频片段：
 
+画面元素解构
+
+素材类型：识别所有视觉元素（真人出镜口播/视频素材/图像素材/动画/3D模型/文字/图表等）
+
+空间拓扑：使用坐标系描述元素位置（示例：x轴0-100，y轴0-100）
+
+空间占比：每一类内容占整个画面的比例
+
+层级关系：标注元素层级（背景层/主视觉层/叠加层）
+
+动态效果分析
+
+运镜方式：推/拉/摇/移/跟（标注幅度和速度）
+
+元素动态：入场/退场动画类型（缩放/平移/旋转等）
+
+转场技巧：若为场景切换点，标注转场类型
+
+专业技法识别
+
+色彩工程：主色调/对比色/渐变应用
+
+视觉引导：视觉焦点转移路径（Z型/S型等构图）
+
+隐藏设计解析
+
+注意力引导：突出核心信息的视觉策略
+
+情感渲染：色调/运镜与内容情感的协同
+
+信息密度：单位时间内视觉信息量评估
+
+美学评价
+
+排版
+
+吸引力
+
+请使用如下格式结构化输出：
+【画面解构】
+素材构成：[元素列表]
+空间拓扑：[坐标系定位]
+空间占比：[每种元素占据画面的比例]
+景深结构：[前景/中景/背景描述]
+
+【动态描述】
+运镜模式：[技术术语+参数]
+动态语法：[关键帧变化描述]
+视觉节奏：[镜头时长与动作匹配度]
+
+【视频设计思路】
+核心焦点：[视觉焦点转移路径]
+认知负荷：[信息吸收难易度评估]
+导演意图：[推测的内容表达策略]"
+
+【美学评价】
+配色：[配色思路/评分]
+布局：[布局思路/评分]
+美学：[美学评价/评分]
+"""
 video_path, frames, timestamps = get_video_frames(video_url, num_frames=64)
 # image_grid = create_image_grid(frames, num_columns=8)
 # display(image_grid.resize((640, 640)))
