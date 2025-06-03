@@ -108,7 +108,7 @@ def inference(video_path, prompt, max_new_tokens=2048, total_pixels=20480 * 28 *
     return output_text[0]
 
 
-video_url = "test_video/小林说-碳排放-cut/小林说-碳排放-Scene-003.mp4"
+video_url = "test_video/小林说-碳排放-Scene-001.mp4"
 # prompt = "请用表格总结一下视频中的商品特点"
 # prompt = "请描述一下视频的内容摘要"
 # prompt = "我想分析视频的剪辑制作手法，请描述画面使用的素材类型和空间布局,比如：“该视频背景为虚化模糊效果，画面中有三个画中画，中间两个窗口分别展示视频素材和图表，右下角放置主播讲解的窗口”"
