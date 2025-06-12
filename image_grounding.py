@@ -119,7 +119,6 @@ def plot_bounding_boxes(im, bounding_boxes, input_width, input_height):
 
     # Display the image
     img.show()
-    img.save("output.png")
 
 
 def plot_points(im, text, input_width, input_height):
@@ -207,49 +206,20 @@ def inference(img_url, prompt, system_prompt="You are a helpful assistant", max_
   return output_text[0], input_height, input_width
 
 
-image_path = "/root/paddlejob/workspace/env_run/Qwen2.5-VL/test_video/test_img/小林说-碳排放-Scene-002-01.jpg"
+image_path = "cookbooks/assets/spatial_understanding/cakes.png"
 
 
 ## Use a local HuggingFace model to inference.
 # prompt in chinese
-# prompt = "框出每一个小蛋糕的位置，以json格式输出所有的坐标"
-# prompt = '''
-# 任务目标
-#     框出每一个人的位置，以json格式输出每种布局的坐标。
-# '''
-
-# prompt = '''
-# 你是一个视频制作布局分析专家，请认真分析视频画面的布局特点，给出详尽的布局描述，包括各元素的图层关系、位置（以绝对坐标表示）、形状（一般为长方形，也有可能为圆形等其它形状）、大小，其中元素包括背景、主播人物、插入图像素材、艺术字素材（指的是有语义传达的，不需要那些只有装饰作用的艺术字）、字幕等。请注意以下要求：1. 我希望可以通过该描述，准确复现此种布局；2. 主体人物和背景有可能是在同一图层，我只需要将不同的图层分离开，而不需要将同一图层下的元素分割开，比如背景或每个插入图像中的真实物体不需要分割出来；3.我希望在描述中带有准确的位置和大小信息；4. 请注意区分图层的层级，自底向上进行分析和描述
-# '''
-prompt = '''
-请对视频画面的布局进行详尽分析，并提供可以用于准确复现此布局的描述。您需要分析的图层类型包括：背景图、主播人物、插入图像素材、艺术字素材、字幕等。
-原始视频帧信息：宽高比为4:3， 分辨率为1920x1080
-分析要求：
-图层判断与分析：
-识别画面中是否存在明显的图层分离迹象，例如：画中画边框、边缘清晰度、阴影处理等。
-如果主体人物和背景没有明显的图层分离迹象，并且背景是主播录制时的真实场景，则将其归为同一图层，并命名为"主播图层"。
-图层描述：自底向上描述各图层的层级关系。
-对每个图层中的元素进行描述，说明其在画面中的具体表现。
-位置与大小：提供各图层的准确位置（例如：左上角坐标）和大小（例如：宽度与高度）。
-例如："艺术字图层位于画面右上角，左上角坐标为(50, 50)，大小为200x50像素。"
-元素描述：
-描述图层元素类型，如果包含文字，则给出文字内容。
-通过这种详细的布局描述，确保可以准确复现视频画面的布局特征。请仔细区分各图层的层级关系，并使用图层分离的标准判断各元素的独立性。
-'''
-
+prompt = "框出每一个小蛋糕的位置，以json格式输出所有的坐标"
 # prompt in english
-# prompt = "Outline the position of each small cake and output all the coordinates in JSON format."
+prompt = "Outline the position of each small cake and output all the coordinates in JSON format."
 response, input_height, input_width = inference(image_path, prompt)
 
-print("response:", response)
-print("input_height:", input_height)
-print("input_width:", input_width)
-
-
-# image = Image.open(image_path)
-# print(image.size)
-# image.thumbnail([640,640], Image.Resampling.LANCZOS)
-# plot_bounding_boxes(image,response,input_width,input_height)
+image = Image.open(image_path)
+print(image.size)
+image.thumbnail([640,640], Image.Resampling.LANCZOS)
+plot_bounding_boxes(image,response,input_width,input_height)
 
 
 
